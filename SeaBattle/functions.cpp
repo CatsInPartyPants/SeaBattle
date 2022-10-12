@@ -123,7 +123,7 @@ void user_places_ships(char** battlefield)
 		std::cout << "Boats left: " << i << std::endl;
 		std::cin >> x;
 		std::cin >> y;
-	
+		//HERE
 	}
 }
 
