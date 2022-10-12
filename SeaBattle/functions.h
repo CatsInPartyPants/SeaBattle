@@ -8,6 +8,10 @@ char** make_battlefield();
 
 void delete_battlefield(char** battlefield);
 
+void user_places_ships(char** battlefield);
+
+void computer_places_ships(char** battlefield);
+
 
 void draw_field(char** battlefield);
 
