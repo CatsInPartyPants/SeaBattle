@@ -108,26 +108,128 @@ void delete_battlefield(char** battlefield)
 
 void user_places_ships(char** battlefield)
 {
-	char x;
-	int y;
+	char row;
+	int y, x;
 	std::cout << "You can place:\n" << std::endl;
 	std::cout << "4 boats (letter B, 1 cell), for example B:\n" << std::endl;
 	std::cout << "3 destroyers (letter D, 2 cells), for example DD:\n" << std::endl;
 	std::cout << "2 cruisers (letter C, 3 cells), for example CCC:\n" << std::endl;
 	std::cout << "1 battleship (letter L, 4 cells), for example LLLL:\n\n" << std::endl;
-
+	draw_field(battlefield);
+	
+	//placing boats
 	for(int i = 4; i > 0; i--)
 	{
 		std::cout << "First of all, lets put 4 boats on the map, enter row (A,B,C etc.)\n then enter colomn(1,2,3 etc.) "
 			<< "where the boat will be placed : \n" << std::endl;
 		std::cout << "Boats left: " << i << std::endl;
-		std::cin >> x;
+		std::cin >> row;
 		std::cin >> y;
-		//HERE
+		if (y == 0)
+			y = 9;
+		else
+			y--;
+		x = text_to_number(&row);
+		if (battlefield[y][x] == '_')
+		{
+			battlefield[y][x] = 'B';
+		}
+		system("CLS");
+		draw_field(battlefield);
 	}
+
+	//placing destroyers
+	system("CLS");
+	std::cout << "Now you need to place 3 destroyers (destroyers are in 2 cells):" << std::endl;
+	draw_field(battlefield);
+	for (int i = 6; i > 0; i--)
+	{
+		std::cout << "Destroyers cells left: " << i << std::endl;
+		std::cin >> row;
+		std::cin >> y;
+		if (y == 0)
+			y = 9;
+		else
+			y--;
+		x = text_to_number(&row);
+		if (battlefield[y][x] == '_')
+		{
+			battlefield[y][x] = 'D';
+		}
+		draw_field(battlefield);
+	}
+
+	//placing cruisers
+	system("CLS");
+	std::cout << "Place 2 cruisers (cruisers are in 3 cells):" << std::endl;
+	draw_field(battlefield);
+	for (int i = 6; i > 0; i--)
+	{
+		std::cout << "Cruiser cells left: " << i << std::endl;
+		std::cin >> row;
+		std::cin >> y;
+		if (y == 0)
+			y = 9;
+		else
+			y--;
+		x = text_to_number(&row);
+		if (battlefield[y][x] == '_')
+		{
+			battlefield[y][x] = 'C';
+		}
+		draw_field(battlefield);
+	}
+
+	//placing battleship
+	system("CLS");
+	std::cout << "Place 1 battleship (battleship is in 4 cells):" << std::endl;
+	draw_field(battlefield);
+	for (int i = 4; i > 0; i--)
+	{
+		std::cout << "Battleship cells left: " << i << std::endl;
+		std::cin >> row;
+		std::cin >> y;
+		if (y == 0)
+			y = 9;
+		else
+			y--;
+		x = text_to_number(&row);
+		if (battlefield[y][x] == '_')
+		{
+			battlefield[y][x] = 'L';
+		}
+		draw_field(battlefield);
+	}
+
 }
 
 void computer_places_ships(char** battlefield)
 {
+	//HERE
+}
 
+int text_to_number(char* row)
+{
+	int x = 0;
+	if (*row == 'A' || *row == 'a')
+		x = 0;
+	else if (*row == 'B' || *row == 'b')
+		x = 1;
+	else if (*row == 'C' || *row == 'c')
+		x = 2;
+	else if (*row == 'D' || *row == 'd')
+		x = 3;
+	else if (*row == 'E' || *row == 'e')
+		x = 4;
+	else if (*row == 'F' || *row == 'f')
+		x = 5;
+	else if (*row == 'G' || *row == 'g')
+		x = 6;
+	else if (*row == 'H' || *row == 'h')
+		x = 7;
+	else if (*row == 'I' || *row == 'i')
+		x = 8;
+	else if (*row == 'K' || *row == 'k')
+		x = 9;
+	return x;
 }

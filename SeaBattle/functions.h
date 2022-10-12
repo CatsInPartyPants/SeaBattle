@@ -12,6 +12,7 @@ void user_places_ships(char** battlefield);
 
 void computer_places_ships(char** battlefield);
 
+int text_to_number(char* row);
 
 void draw_field(char** battlefield);
 
@@ -19,6 +20,7 @@ void draw_field(char** battlefield);
 
 void main_menu(char ** battlefield);
 
-void user_vs_computer_menu();
+void user_vs_computer_menu(char** battlefield);
+
 
 #endif
