@@ -3,5 +3,11 @@
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    char** battlefield = make_battlefield();
+
+    main_menu(battlefield);
+
+    delete_battlefield(battlefield);
+
+   
 }
