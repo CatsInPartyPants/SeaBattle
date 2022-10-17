@@ -29,7 +29,7 @@ void draw_field(char** battlefield)
 	}
 }
 
-void main_menu(char **battlefield)
+void main_menu()
 {
 	int user_choise_main_menu;
 	std::cout << "Game Sea Battle\n\n";
@@ -38,45 +38,27 @@ void main_menu(char **battlefield)
 	std::cout << "2. Start game computer vs computer." << std::endl;
 	std::cout << "3. Exit." << std::endl;
 	std::cin >> user_choise_main_menu;
-
-	switch (user_choise_main_menu)
-	{
-	case 1:
-		system("CLS");
-		user_vs_computer_menu(battlefield);
-		break;
-	case 2:
-		system("CLS");
-		break;
-	case 3:
-		system("CLS");
-		break;
-	default:
-		break;
-	}
+	user_vs_computer_menu(user_choise_main_menu);
 
 }
 
-void user_vs_computer_menu(char** battlefield)
+void user_vs_computer_menu(int pvc_or_cvc)
 {
-	int user_choise_user_vs_computer_menu;
-	std::cout << "1. Random ship shaffle." << std::endl;
-	std::cout << "2. User choose where ships will be stand." << std::endl;
-	std::cin >> user_choise_user_vs_computer_menu;
-	switch (user_choise_user_vs_computer_menu)
+	if (pvc_or_cvc == 3)
+		std::cout << "Good bye!";
+	else if (pvc_or_cvc == 2)
 	{
-	case 1:
-		system("CLS");
-		computer_places_ships(battlefield);
-		break;
-	case 2:
-		system("CLS");
-		user_places_ships(battlefield);
-		break;
-	default:
-		system("CLS");
-		break;
+		start_the_game(pvc_or_cvc, 1);
 	}
+	else {
+		int user_choise_user_vs_computer_menu;
+		std::cout << "1. Random ship shaffle." << std::endl;
+		std::cout << "2. User choose where ships will be stand." << std::endl;
+		std::cin >> user_choise_user_vs_computer_menu;
+		system("CLS");
+		start_the_game(pvc_or_cvc, user_choise_user_vs_computer_menu);
+	}
+	
 }
 
 char** make_battlefield()
@@ -416,9 +398,9 @@ int text_to_number(char* row)
 bool isWin(char** battlefield)
 {
 	int win = 0;
-	for (int x = 0; x < 9; x++)
+	for (int x = 0; x < 10; x++)
 	{
-		for (int y = 0; y < 9; y++)
+		for (int y = 0; y < 10; y++)
 		{
 			if (battlefield[x][y] == 'X')
 			{
@@ -427,9 +409,9 @@ bool isWin(char** battlefield)
 		}
 	}
 	if (win == 20)
-		return false;
-	else
 		return true;
+	else
+		return false;
 }
 
 
@@ -447,7 +429,7 @@ void user_make_shot(char** enemybattlefield, char** emptybatlefield)
 		y--;
 	x = text_to_number(&row);
 
-	if (enemybattlefield[y][x] == '_')
+if(enemybattlefield[y][x] == '_')
 	{
 		enemybattlefield[y][x] = '*';
 		emptybatlefield[y][x] = '*';
@@ -457,6 +439,7 @@ void user_make_shot(char** enemybattlefield, char** emptybatlefield)
 		enemybattlefield[y][x] = 'X';
 		emptybatlefield[y][x] = 'X';
 	}
+	
 }
 
 void computer_make_stupid_shot(char** enemybattlefield)
@@ -464,16 +447,28 @@ void computer_make_stupid_shot(char** enemybattlefield)
 	srand(time(NULL));
 	int x = 0;
 	int y = 0;
-	x = 0 + rand() % 9;
-	x = 0 + rand() % 9;
-	if (enemybattlefield[x][y] == '_')
+	bool isMakeShot = false;
+	
+	while (isMakeShot == false)
 	{
-		enemybattlefield[x][y] = '*';
+		x = 0 + rand() % 10;
+		y = 0 + rand() % 10;
+		if (enemybattlefield[x][y] == '_')
+		{
+			enemybattlefield[x][y] = '*';
+			isMakeShot = true;
+		}
+		else if(enemybattlefield[x][y] == '*' || enemybattlefield[x][y] == 'X')
+		{
+			isMakeShot = false;
+		}
+		else
+		{
+			enemybattlefield[x][y] = 'X';
+				isMakeShot = true;
+		}
 	}
-	else
-	{
-		enemybattlefield[x][y] = 'X';
-	}
+	
 }
 
 void start_the_game(int pvc_or_cvc, int shipshaffle)
@@ -495,7 +490,7 @@ void start_the_game(int pvc_or_cvc, int shipshaffle)
 			computer_places_ships(first_battlefield);
 		else if (shipshaffle == 2)
 			user_places_ships(first_battlefield);
-		while (isWin(first_battlefield) || isWin(second_battlefield))
+		while (true)
 		{
 			std::cout << "It is your ships position:\n";
 			draw_field(first_battlefield);
@@ -503,8 +498,19 @@ void start_the_game(int pvc_or_cvc, int shipshaffle)
 			std::cout << "Your shots, * - missings, X - on target:\n";
 			draw_field(empty_battlefield);
 			user_make_shot(second_battlefield, empty_battlefield);
+			if (isWin(second_battlefield))
+			{
+				std::cout << "User win!\n";
+					break;
+			}
 			Sleep(1000);
 			computer_make_stupid_shot(first_battlefield);
+			if (isWin(first_battlefield))
+			{
+				std::cout << "Computer win!\n";
+				break;
+			}
+			system("CLS");
 		}
 
 	}
@@ -516,6 +522,40 @@ void start_the_game(int pvc_or_cvc, int shipshaffle)
 
 		computer_places_ships(first_battlefield);
 		computer_places_ships(second_battlefield);
-	}
-	
+
+		while (true)
+		{
+			std::cout << "It is 1 computer ships position:\n";
+			draw_field(first_battlefield);
+			std::cout << std::endl << std::endl;
+			std::cout << "It is 2 computer ships position:\n";
+			draw_field(second_battlefield);
+			computer_make_stupid_shot(second_battlefield);
+			if (isWin(second_battlefield))
+			{
+				system("CLS");
+				std::cout << "It is 1 computer ships position:\n";
+				draw_field(first_battlefield);
+				std::cout << std::endl << std::endl;
+				std::cout << "It is 2 computer ships position:\n";
+				draw_field(second_battlefield);
+				std::cout << "Computer 1 win!\n";
+				break;
+			}
+			Sleep(1000);
+			computer_make_stupid_shot(first_battlefield);
+			if (isWin(first_battlefield))
+			{
+				system("CLS");
+				std::cout << "It is 1 computer ships position:\n";
+				draw_field(first_battlefield);
+				std::cout << std::endl << std::endl;
+				std::cout << "It is 2 computer ships position:\n";
+				draw_field(second_battlefield);
+				std::cout << "Computer 2 win!\n";
+				break;
+			}
+			system("CLS");
+		}
+	}	
 }

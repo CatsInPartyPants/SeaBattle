@@ -18,9 +18,9 @@ void draw_field(char** battlefield);
 
 //menu functions
 
-void main_menu(char ** battlefield);
+void main_menu();
 
-void user_vs_computer_menu(char** battlefield);
+void user_vs_computer_menu(int pvc_or_cvc);
 
 //game functions
 
