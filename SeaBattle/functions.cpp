@@ -1,5 +1,6 @@
 #include "functions.h"
 #include <iostream>
+#include <Windows.h>
 
 void draw_field(char** battlefield)
 {
@@ -205,7 +206,185 @@ void user_places_ships(char** battlefield)
 
 void computer_places_ships(char** battlefield)
 {
-	//HERE
+	srand(time(NULL));
+	int cheking_count_of_boats=0;
+	int cheking_count_of_destroyers = 0;
+
+	//battleship
+	int btlshp = 0;
+	int cruiser = 0;
+	btlshp = rand() % 3 +1;
+	cruiser = rand() % 2 + 1;
+	if (btlshp == 1)
+	{
+		battlefield[0][9] = 'L';
+		battlefield[0][8] = 'L';
+		battlefield[0][7] = 'L';
+		battlefield[0][6] = 'L';
+	}
+	else if (btlshp == 2)
+	{
+		battlefield[9][9] = 'L';
+		battlefield[9][8] = 'L';
+		battlefield[9][7] = 'L';
+		battlefield[9][6] = 'L';
+	}
+	else if (btlshp == 3)
+	{
+		battlefield[0][0] = 'L';
+		battlefield[1][0] = 'L';
+		battlefield[2][0] = 'L';
+		battlefield[3][0] = 'L';
+	}
+
+	//adding cruisers
+	if (btlshp == 1)
+	{
+		if (cruiser == 1)
+		{
+			battlefield[0][0] = 'C';
+			battlefield[0][1] = 'C';
+			battlefield[0][2] = 'C';
+
+			battlefield[9][0] = 'C';
+			battlefield[8][0] = 'C';
+			battlefield[7][0] = 'C';
+		}
+		else if (cruiser == 2)
+		{
+			battlefield[9][9] = 'C';
+			battlefield[8][9] = 'C';
+			battlefield[7][9] = 'C';
+
+			battlefield[1][0] = 'C';
+			battlefield[1][1] = 'C';
+			battlefield[1][2] = 'C';
+		}
+		
+	}
+	else if (btlshp == 2)
+	{
+		if (cruiser == 1)
+		{
+			battlefield[0][9] = 'C';
+			battlefield[1][9] = 'C';
+			battlefield[2][9] = 'C';
+
+			battlefield[9][0] = 'C';
+			battlefield[9][1] = 'C';
+			battlefield[9][2] = 'C';
+		}
+		else if (cruiser == 2)
+		{
+			battlefield[5][0] = 'C';
+			battlefield[6][0] = 'C';
+			battlefield[7][0] = 'C';
+
+			battlefield[3][7] = 'C';
+			battlefield[3][8] = 'C';
+			battlefield[3][9] = 'C';
+		}
+
+	}
+	else if (btlshp == 3)
+	{
+		if (cruiser == 1)
+		{
+			battlefield[3][9] = 'C';
+			battlefield[4][9] = 'C';
+			battlefield[5][9] = 'C';
+
+			battlefield[0][3] = 'C';
+			battlefield[0][4] = 'C';
+			battlefield[0][5] = 'C';
+		}
+		else if (cruiser == 2)
+		{
+			battlefield[5][0] = 'C';
+			battlefield[6][0] = 'C';
+			battlefield[7][0] = 'C';
+
+			battlefield[9][1] = 'C';
+			battlefield[9][2] = 'C';
+			battlefield[9][3] = 'C';
+		}
+	}
+
+	
+	//adding destroyers
+	while (cheking_count_of_destroyers != 6)
+	{
+		int x = 0;
+		int y = 0;
+		x = 2 + rand() % (7-2);
+		Sleep(50);
+		y = 2 + rand() % (7-2);
+		//std::cout << "X " << x << " Y " << y << std::endl;
+		if (battlefield[x][y] == '_' && battlefield[x+1][y] == '_' 
+			&& battlefield[x - 1][y] == '_' 
+			&& battlefield[x - 1][y-1] == '_'
+			&& battlefield[x - 1][y] == '_'
+			&& battlefield[x + 1][y - 1] == '_'
+			&& battlefield[x+1][y+2] == '_'
+			&& battlefield[x + 2][y - 1] == '_'
+			&& battlefield[x + 2][y] == '_'
+			&& battlefield[x + 2][y + 1] == '_'
+			&& battlefield[x + 1][y + 1] == '_'
+			&& battlefield[x][y + 1] == '_'
+			&& battlefield[x - 1][y + 1] == '_'
+			&& battlefield[x][y - 1] == '_'
+			&& cheking_count_of_destroyers != 4)
+		{
+			battlefield[x][y] = 'D';
+			battlefield[x + 1][y] = 'D';
+			cheking_count_of_destroyers+=2;
+			Sleep(75);
+			//system("CLS");
+			//draw_field(battlefield);
+		}
+		else if (battlefield[x][y] == '_' && battlefield[x][y + 1] == '_'
+			&& battlefield[x - 1][y] == '_'
+			&& battlefield[x - 1][y - 1] == '_'
+			&& battlefield[x][y - 1] == '_'
+			&& battlefield[x + 1][y - 1] == '_'
+			&& battlefield[x + 1][y] == '_'
+			&& battlefield[x + 1][y + 1] == '_'
+			&& battlefield[x + 1][y + 2]
+			&& battlefield[x][y + 2] == '_'
+			&& battlefield[x - 1][y + 2] == '_'
+			&& battlefield[x - 1][y + 1] == '_')
+		{
+			battlefield[x][y] = 'D';
+			battlefield[x][y+1] = 'D';
+			cheking_count_of_destroyers += 2;
+			Sleep(546);
+			//system("CLS");
+			//draw_field(battlefield);
+		}
+	}
+
+	//adding boats
+	while (cheking_count_of_boats != 4)
+	{
+		int x, y;
+		x = rand() % 8 + 1;
+		Sleep(50);
+		y = rand() % 8 + 1;
+		if (battlefield[x][y] == '_' && battlefield[x - 1][y] == '_'
+			&& battlefield[x - 1][y - 1] == '_'
+			&& battlefield[x][y - 1] == '_'
+			&& battlefield[x + 1][y - 1] == '_'
+			&& battlefield[x + 1][y] == '_'
+			&& battlefield[x + 1][y + 1] == '_'
+			&& battlefield[x][y + 1] == '_')
+		{
+			battlefield[x][y] = 'B';
+			cheking_count_of_boats++;
+			Sleep(574);
+			//system("CLS");
+			//draw_field(battlefield);
+		}
+	}
 }
 
 int text_to_number(char* row)
@@ -232,4 +411,111 @@ int text_to_number(char* row)
 	else if (*row == 'K' || *row == 'k')
 		x = 9;
 	return x;
+}
+
+bool isWin(char** battlefield)
+{
+	int win = 0;
+	for (int x = 0; x < 9; x++)
+	{
+		for (int y = 0; y < 9; y++)
+		{
+			if (battlefield[x][y] == 'X')
+			{
+				win++;
+			}
+		}
+	}
+	if (win == 20)
+		return false;
+	else
+		return true;
+}
+
+
+void user_make_shot(char** enemybattlefield, char** emptybatlefield)
+{
+	char row;
+	int y, x;
+	std::cout << "Enter row (A,B,C etc.) ->";
+	std::cin >> row;
+	std::cout << "Enter colomn (1,2,3 etc.) ->";
+	std::cin >> y;
+	if (y == 0)
+		y = 9;
+	else
+		y--;
+	x = text_to_number(&row);
+
+	if (enemybattlefield[y][x] == '_')
+	{
+		enemybattlefield[y][x] = '*';
+		emptybatlefield[y][x] = '*';
+	}
+	else
+	{
+		enemybattlefield[y][x] = 'X';
+		emptybatlefield[y][x] = 'X';
+	}
+}
+
+void computer_make_stupid_shot(char** enemybattlefield)
+{
+	srand(time(NULL));
+	int x = 0;
+	int y = 0;
+	x = 0 + rand() % 9;
+	x = 0 + rand() % 9;
+	if (enemybattlefield[x][y] == '_')
+	{
+		enemybattlefield[x][y] = '*';
+	}
+	else
+	{
+		enemybattlefield[x][y] = 'X';
+	}
+}
+
+void start_the_game(int pvc_or_cvc, int shipshaffle)
+{
+	if (pvc_or_cvc == 1)
+	{
+		//making 2 fields
+		char** first_battlefield = make_battlefield();
+
+		char** second_battlefield = make_battlefield();
+
+		char** empty_battlefield = make_battlefield();
+
+		//second field anyway shaffle by computer
+		computer_places_ships(second_battlefield);
+
+		//first field shaffeled by user or computer?
+		if (shipshaffle == 1)
+			computer_places_ships(first_battlefield);
+		else if (shipshaffle == 2)
+			user_places_ships(first_battlefield);
+		while (isWin(first_battlefield) || isWin(second_battlefield))
+		{
+			std::cout << "It is your ships position:\n";
+			draw_field(first_battlefield);
+			std::cout << std::endl << std::endl;
+			std::cout << "Your shots, * - missings, X - on target:\n";
+			draw_field(empty_battlefield);
+			user_make_shot(second_battlefield, empty_battlefield);
+			Sleep(1000);
+			computer_make_stupid_shot(first_battlefield);
+		}
+
+	}
+	else if (pvc_or_cvc == 2)
+	{
+		char** first_battlefield = make_battlefield();
+
+		char** second_battlefield = make_battlefield();
+
+		computer_places_ships(first_battlefield);
+		computer_places_ships(second_battlefield);
+	}
+	
 }

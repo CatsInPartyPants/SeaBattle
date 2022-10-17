@@ -22,5 +22,15 @@ void main_menu(char ** battlefield);
 
 void user_vs_computer_menu(char** battlefield);
 
+//game functions
+
+bool isWin(char** battlefield);
+
+void start_the_game(int pvc_or_cvc, int shipshaffle);
+
+void user_make_shot(char** enemybattlefield, char** emptybatlefield);
+
+void computer_make_stupid_shot(char** enemybattlefield);
+
 
 #endif
