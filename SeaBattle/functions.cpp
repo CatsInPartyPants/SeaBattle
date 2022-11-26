@@ -415,7 +415,7 @@ bool isWin(char** battlefield)
 }
 
 
-void user_make_shot(char** enemybattlefield, char** emptybatlefield)
+bool user_make_shot(char** enemybattlefield, char** emptybatlefield)
 {
 	char row;
 	int y, x;
@@ -433,16 +433,23 @@ if(enemybattlefield[y][x] == '_')
 	{
 		enemybattlefield[y][x] = '*';
 		emptybatlefield[y][x] = '*';
+		return false;
+	}
+	else if (enemybattlefield[y][x] == '*' || enemybattlefield[y][x] == 'X')
+	{
+		std::cout << "You already shot to this cell!\n";
+		return true;
 	}
 	else
 	{
 		enemybattlefield[y][x] = 'X';
 		emptybatlefield[y][x] = 'X';
+		return true;
 	}
 	
 }
 
-void computer_make_stupid_shot(char** enemybattlefield)
+bool computer_make_stupid_shot(char** enemybattlefield)
 {
 	srand(time(NULL));
 	int x = 0;
@@ -457,6 +464,7 @@ void computer_make_stupid_shot(char** enemybattlefield)
 		{
 			enemybattlefield[x][y] = '*';
 			isMakeShot = true;
+			return false;
 		}
 		else if(enemybattlefield[x][y] == '*' || enemybattlefield[x][y] == 'X')
 		{
@@ -465,7 +473,8 @@ void computer_make_stupid_shot(char** enemybattlefield)
 		else
 		{
 			enemybattlefield[x][y] = 'X';
-				isMakeShot = true;
+			isMakeShot = true;
+			return true;
 		}
 	}
 	
@@ -482,6 +491,9 @@ void start_the_game(int pvc_or_cvc, int shipshaffle)
 
 		char** empty_battlefield = make_battlefield();
 
+		bool is_user_got_shot = false;
+		bool is_computer_got_shot = false;
+
 		//second field anyway shaffle by computer
 		computer_places_ships(second_battlefield);
 
@@ -497,18 +509,25 @@ void start_the_game(int pvc_or_cvc, int shipshaffle)
 			std::cout << std::endl << std::endl;
 			std::cout << "Your shots, * - missings, X - on target:\n";
 			draw_field(empty_battlefield);
-			user_make_shot(second_battlefield, empty_battlefield);
-			if (isWin(second_battlefield))
+
+			if (!is_computer_got_shot)
 			{
-				std::cout << "User win!\n";
+				is_user_got_shot = user_make_shot(second_battlefield, empty_battlefield);
+				if (isWin(second_battlefield))
+				{
+					std::cout << "User win!\n";
 					break;
+				}
+				Sleep(1000);
 			}
-			Sleep(1000);
-			computer_make_stupid_shot(first_battlefield);
-			if (isWin(first_battlefield))
+			if (!is_user_got_shot)
 			{
-				std::cout << "Computer win!\n";
-				break;
+				is_computer_got_shot = computer_make_stupid_shot(first_battlefield);
+				if (isWin(first_battlefield))
+				{
+					std::cout << "Computer win!\n";
+					break;
+				}
 			}
 			system("CLS");
 		}
@@ -520,6 +539,9 @@ void start_the_game(int pvc_or_cvc, int shipshaffle)
 
 		char** second_battlefield = make_battlefield();
 
+		bool is_first_got_shot = false;
+		bool is_second_got_shot = false;
+
 		computer_places_ships(first_battlefield);
 		computer_places_ships(second_battlefield);
 
@@ -530,30 +552,40 @@ void start_the_game(int pvc_or_cvc, int shipshaffle)
 			std::cout << std::endl << std::endl;
 			std::cout << "It is 2 computer ships position:\n";
 			draw_field(second_battlefield);
-			computer_make_stupid_shot(second_battlefield);
-			if (isWin(second_battlefield))
+
+			if (!is_second_got_shot)
 			{
-				system("CLS");
-				std::cout << "It is 1 computer ships position:\n";
-				draw_field(first_battlefield);
-				std::cout << std::endl << std::endl;
-				std::cout << "It is 2 computer ships position:\n";
-				draw_field(second_battlefield);
-				std::cout << "Computer 1 win!\n";
-				break;
+				is_first_got_shot = computer_make_stupid_shot(second_battlefield);
+				if (isWin(second_battlefield))
+				{
+					system("CLS");
+					std::cout << "It is 1 computer ships position:\n";
+					draw_field(first_battlefield);
+					std::cout << std::endl << std::endl;
+					std::cout << "It is 2 computer ships position:\n";
+					draw_field(second_battlefield);
+					std::cout << "Computer 1 win!\n";
+					break;
+				}
+				Sleep(100);
 			}
-			Sleep(1000);
-			computer_make_stupid_shot(first_battlefield);
-			if (isWin(first_battlefield))
+
+			if (!is_first_got_shot)
 			{
-				system("CLS");
-				std::cout << "It is 1 computer ships position:\n";
-				draw_field(first_battlefield);
-				std::cout << std::endl << std::endl;
-				std::cout << "It is 2 computer ships position:\n";
-				draw_field(second_battlefield);
-				std::cout << "Computer 2 win!\n";
-				break;
+
+				is_second_got_shot = computer_make_stupid_shot(first_battlefield);
+				if (isWin(first_battlefield))
+				{
+					system("CLS");
+					std::cout << "It is 1 computer ships position:\n";
+					draw_field(first_battlefield);
+					std::cout << std::endl << std::endl;
+					std::cout << "It is 2 computer ships position:\n";
+					draw_field(second_battlefield);
+					std::cout << "Computer 2 win!\n";
+					break;
+				}
+				Sleep(100);
 			}
 			system("CLS");
 		}

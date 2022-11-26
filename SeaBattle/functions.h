@@ -28,9 +28,9 @@ bool isWin(char** battlefield);
 
 void start_the_game(int pvc_or_cvc, int shipshaffle);
 
-void user_make_shot(char** enemybattlefield, char** emptybatlefield);
+bool user_make_shot(char** enemybattlefield, char** emptybatlefield);
 
-void computer_make_stupid_shot(char** enemybattlefield);
+bool computer_make_stupid_shot(char** enemybattlefield);
 
 
 #endif
