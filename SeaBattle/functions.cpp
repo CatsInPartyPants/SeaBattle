@@ -480,6 +480,108 @@ bool computer_make_stupid_shot(char** enemybattlefield)
 	
 }
 
+bool computer_make_smart_shot(char** enemybattlefield)
+{
+	srand(time(NULL));
+	int x = 0;
+	int y = 0;
+	bool isMakeShot = false;
+
+	static int x_in_target = -1;
+	static int y_in_target = -1;
+	static int number_of_attemps = 4;
+
+	while (isMakeShot == false)
+	{
+		if ((x_in_target == -1 && y_in_target == -1) || number_of_attemps == 0)
+		{
+			x = 0 + rand() % 10;
+			y = 0 + rand() % 10;
+		}
+		else if(x_in_target != 9 && x_in_target != 0 && y_in_target != 9 && y_in_target != 0 && number_of_attemps > 0)
+		{
+			int temp = 1 + rand() % 4;
+			switch (temp)
+			{
+			case 1:
+				x = x_in_target;
+				y = y_in_target + 1;
+				break;
+			case 2:
+				x = x_in_target;
+				y = y_in_target - 1;
+				break;
+			case 3:
+				x = x_in_target + 1;
+				y = y_in_target;
+				break;
+			case 4:
+				x = x_in_target - 1;
+				y = y_in_target;
+				break;
+			}
+		}
+		else if ((x_in_target == 9 || x_in_target == 0) && y_in_target != 9 && y_in_target != 0 && number_of_attemps > 2)
+		{
+			int temp = 1 + rand() % 2;
+			switch (temp)
+			{
+			case 1:
+				x = x_in_target;
+				y = y_in_target + 1;
+				break;
+			case 2:
+				x = x_in_target;
+				y = y_in_target - 1;
+				break;
+			}
+		}
+		else if ((y_in_target == 9 || y_in_target == 0) && x_in_target != 9 && x_in_target != 0 && number_of_attemps > 2)
+		{
+			int temp = 1 + rand() % 2;
+			switch (temp)
+			{
+			case 1:
+				x = x_in_target+1;
+				y = y_in_target;
+				break;
+			case 2:
+				x = x_in_target-1;
+				y = y_in_target;
+				break;
+			}
+		}
+		else
+		{
+			x = 0 + rand() % 10;
+			y = 0 + rand() % 10;
+		}
+
+		if (enemybattlefield[x][y] == '_')
+		{
+			enemybattlefield[x][y] = '*';
+			isMakeShot = true;
+			number_of_attemps--;
+			return false;
+		}
+		else if (enemybattlefield[x][y] == '*' || enemybattlefield[x][y] == 'X')
+		{
+			isMakeShot = false;
+			number_of_attemps--;
+		}
+		else
+		{
+			enemybattlefield[x][y] = 'X';
+			isMakeShot = true;
+			x_in_target = x;
+			y_in_target = y;
+			number_of_attemps = 4;
+			return true;
+		}
+	}
+
+}
+
 void start_the_game(int pvc_or_cvc, int shipshaffle)
 {
 	if (pvc_or_cvc == 1)
@@ -555,7 +657,8 @@ void start_the_game(int pvc_or_cvc, int shipshaffle)
 
 			if (!is_second_got_shot)
 			{
-				is_first_got_shot = computer_make_stupid_shot(second_battlefield);
+				//is_first_got_shot = computer_make_stupid_shot(second_battlefield);
+				is_first_got_shot = computer_make_smart_shot(second_battlefield);
 				if (isWin(second_battlefield))
 				{
 					system("CLS");
@@ -567,13 +670,14 @@ void start_the_game(int pvc_or_cvc, int shipshaffle)
 					std::cout << "Computer 1 win!\n";
 					break;
 				}
-				Sleep(100);
+				Sleep(200);
 			}
 
 			if (!is_first_got_shot)
 			{
 
-				is_second_got_shot = computer_make_stupid_shot(first_battlefield);
+				//is_second_got_shot = computer_make_stupid_shot(first_battlefield);
+				is_second_got_shot = computer_make_smart_shot(first_battlefield);
 				if (isWin(first_battlefield))
 				{
 					system("CLS");
@@ -585,7 +689,7 @@ void start_the_game(int pvc_or_cvc, int shipshaffle)
 					std::cout << "Computer 2 win!\n";
 					break;
 				}
-				Sleep(100);
+				Sleep(200);
 			}
 			system("CLS");
 		}

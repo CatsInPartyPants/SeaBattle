@@ -32,5 +32,7 @@ bool user_make_shot(char** enemybattlefield, char** emptybatlefield);
 
 bool computer_make_stupid_shot(char** enemybattlefield);
 
+bool computer_make_smart_shot(char** enemybattlefield);
+
 
 #endif
