@@ -618,6 +618,9 @@ void start_the_game(int pvc_or_cvc, int shipshaffle)
 				if (isWin(second_battlefield))
 				{
 					std::cout << "User win!\n";
+					delete_battlefield(first_battlefield);
+					delete_battlefield(second_battlefield);
+					delete_battlefield(empty_battlefield);
 					break;
 				}
 				Sleep(1000);
@@ -628,6 +631,9 @@ void start_the_game(int pvc_or_cvc, int shipshaffle)
 				if (isWin(first_battlefield))
 				{
 					std::cout << "Computer win!\n";
+					delete_battlefield(first_battlefield);
+					delete_battlefield(second_battlefield);
+					delete_battlefield(empty_battlefield);
 					break;
 				}
 			}
@@ -668,9 +674,11 @@ void start_the_game(int pvc_or_cvc, int shipshaffle)
 					std::cout << "It is 2 computer ships position:\n";
 					draw_field(second_battlefield);
 					std::cout << "Computer 1 win!\n";
+					delete_battlefield(first_battlefield);
+					delete_battlefield(second_battlefield);
 					break;
 				}
-				Sleep(200);
+				Sleep(20);
 			}
 
 			if (!is_first_got_shot)
@@ -687,9 +695,11 @@ void start_the_game(int pvc_or_cvc, int shipshaffle)
 					std::cout << "It is 2 computer ships position:\n";
 					draw_field(second_battlefield);
 					std::cout << "Computer 2 win!\n";
+					delete_battlefield(first_battlefield);
+					delete_battlefield(second_battlefield);
 					break;
 				}
-				Sleep(200);
+				Sleep(20);
 			}
 			system("CLS");
 		}
